@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Rueda del Dao Celestial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fuente Cinzel -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+    <!-- Favicon mejorado creado en código -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iZ3JhZCIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNTAlIj4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZiIvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzYjFjMzIiLz4KICAgICAgICA8L3JhZGlhbEdyYWRpZW50PgogICAgPC9kZWZzPgogICAgPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9InVybCgjZ3JhZCkiIC8+CiAgICA8cGF0aCBkPSJNMTYgMiBMMTggMTQgTDMwIDE2IEwxOCAxOCBMMTYgMzAgTDE0IDE4IEwyIDE2IEwxNCAxNCBaIiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPg==" type="image/svg+xml">
+    <style>
+        /* Estilos CSS */
+        body {
+            background: linear-gradient(to bottom, #1a1a1a, #3b1c32);
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+            }
+        }
+
+        #wheel {
+            margin: 20px auto;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        #wheelcanvas {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            background: radial-gradient(circle at center, #3b1c32, #1a1a1a);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #spin {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            cursor: pointer;
+            background-color: #5c2d4a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(92, 45, 74, 0.7);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #spin:hover {
+            background-color: #7d3d62;
+            transform: scale(1.05);
+        }
+
+        #options-container {
+            width: 90%;
+            max-width: 500px;
+            margin: 20px auto;
+            background-color: rgba(59, 28, 50, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        #options-container h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+
+        #options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #options-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        #options-list input[type="text"] {
+            flex: 1;
+            padding: 5px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        #options-list input[type="text"]::placeholder {
+            color: #ddd;
+        }
+
+        #options-list button {
+            padding: 5px 10px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #5c2d4a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        #options-list button:hover {
+            background-color: #7d3d62;
+        }
+
+        #add-option {
+            margin-top: 10px;
+            padding: 5px 10px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #5c2d4a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        #add-option:hover {
+            background-color: #7d3d62;
+        }
+
+        /* Animaciones para agregar y eliminar opciones */
+        @keyframes optionAdd {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .option-enter {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .option-enter-active {
+            animation: optionAdd 0.5s forwards;
+        }
+
+        @keyframes optionRemove {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(20px); }
+        }
+
+        .option-exit {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .option-exit-active {
+            animation: optionRemove 0.5s forwards;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            #spin {
+                font-size: 1em;
+            }
+
+            #options-container h2 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Rueda del Dao Celestial</h1>
+    <div id="wheel">
+        <canvas id="wheelcanvas" width="500" height="500"></canvas>
+    </div>
+    <button id="spin">Girar Rueda</button>
+
+    <div id="options-container">
+        <h2>Agregar Opciones</h2>
+        <ul id="options-list">
+            <li>
+                <input type="text" value="Píldora Inmortal">
+                <button class="remove-option">Eliminar</button>
+            </li>
+            <li>
+                <input type="text" value="Espada Celestial">
+                <button class="remove-option">Eliminar</button>
+            </li>
+        </ul>
+        <button id="add-option">Añadir Opción</button>
+    </div>
+
+    <script>
+        // Código JavaScript
+        var options = ['Píldora Inmortal', 'Espada Celestial'];
+        var startAngle = 0;
+        var arc = Math.PI / (options.length / 2);
+        var spinTimeout = null;
+
+        var spinArcStart = 10;
+        var spinTime = 0;
+        var spinTimeTotal = 0;
+
+        var ctx;
+
+        document.getElementById("spin").addEventListener("click", spin);
+        document.getElementById("add-option").addEventListener("click", addOption);
+
+        updateOptionsFromList();
+
+        function byte2Hex(n) {
+            var nybHexString = "0123456789ABCDEF";
+            return String(nybHexString.substr((n >> 4) & 0x0F,1)) + nybHexString.substr(n & 0x0F,1);
+        }
+
+        function RGB2Color(r,g,b) {
+            return '#' + byte2Hex(r) + byte2Hex(g) + byte2Hex(b);
+        }
+
+        function getColor(item, maxitem) {
+            // Estilo místico
+            var hue = item * (360 / maxitem) + spinTime / 50;
+            return 'hsl(' + hue + ', 70%, 50%)';
+        }
+
+        function drawRouletteWheel() {
+            var canvas = document.getElementById("wheelcanvas");
+            if (canvas.getContext) {
+                var outsideRadius = canvas.width / 2 - 10;
+                var textRadius = outsideRadius - 30;
+                var insideRadius = 50;
+
+                ctx = canvas.getContext("2d");
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+
+                ctx.strokeStyle = "white";
+                ctx.lineWidth = 2;
+
+                ctx.font = 'bold 16px "Cinzel", serif';
+
+                for(var i = 0; i < options.length; i++) {
+                    var angle = startAngle + i * arc;
+                    ctx.fillStyle = getColor(i, options.length);
+
+                    ctx.beginPath();
+                    ctx.arc(canvas.width/2, canvas.height/2, outsideRadius, angle, angle + arc, false);
+                    ctx.arc(canvas.width/2, canvas.height/2, insideRadius, angle + arc, angle, true);
+                    ctx.fill();
+
+                    ctx.save();
+                    ctx.fillStyle = "white";
+                    ctx.translate(canvas.width/2 + Math.cos(angle + arc / 2) * textRadius, 
+                                  canvas.height/2 + Math.sin(angle + arc / 2) * textRadius);
+                    ctx.rotate(angle + arc / 2 + Math.PI / 2);
+                    var text = options[i];
+                    ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+                    ctx.restore();
+                }
+
+                // Flecha
+                ctx.fillStyle = "white";
+                ctx.beginPath();
+                ctx.moveTo(canvas.width/2 - 10, canvas.height/2 - (outsideRadius + 20));
+                ctx.lineTo(canvas.width/2 + 10, canvas.height/2 - (outsideRadius + 20));
+                ctx.lineTo(canvas.width/2, canvas.height/2 - (outsideRadius - 5));
+                ctx.fill();
+            }
+        }
+
+        function spin() {
+            spinAngleStart = Math.random() * 30 + 30; // Más aleatorio
+            spinTime = 0;
+            spinTimeTotal = (Math.random() * 4 + 4) * 1000; // Más impredecible
+            rotateWheel();
+        }
+
+        function rotateWheel() {
+            spinTime += 30;
+            if(spinTime >= spinTimeTotal) {
+                stopRotateWheel();
+                return;
+            }
+            var spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
+            startAngle += (spinAngle * Math.PI / 180);
+            drawRouletteWheel();
+            spinTimeout = setTimeout(rotateWheel, 30);
+        }
+
+        function stopRotateWheel() {
+            clearTimeout(spinTimeout);
+            var degrees = startAngle * 180 / Math.PI + 90;
+            var arcd = arc * 180 / Math.PI;
+            var index = Math.floor((360 - degrees % 360) / arcd);
+            ctx.save();
+            ctx.font = 'bold 30px "Cinzel", serif';
+            var text = options[index];
+            ctx.fillStyle = "white";
+            ctx.fillText("¡Ganador: " + text + "!", canvas.width/2 - ctx.measureText("¡Ganador: " + text + "!").width / 2, canvas.height/2 + 10);
+            ctx.restore();
+        }
+
+        function easeOut(t, b, c, d) {
+            var ts = (t/=d)*t;
+            var tc = ts*t;
+            return b+c*(tc + -3*ts + 3*t);
+        }
+
+        function addOption() {
+            var optionsList = document.getElementById("options-list");
+            var li = document.createElement("li");
+            li.classList.add('option-enter');
+            li.innerHTML = '<input type="text" value="" placeholder="Nueva Opción"><button class="remove-option">Eliminar</button>';
+            optionsList.appendChild(li);
+            // Forzar reflujo
+            void li.offsetWidth;
+            li.classList.add('option-enter-active');
+            updateOptionsFromList();
+        }
+
+        function removeOption(event) {
+            if(event.target.classList.contains('remove-option')) {
+                var li = event.target.parentElement;
+                li.classList.add('option-exit');
+                // Forzar reflujo
+                void li.offsetWidth;
+                li.classList.add('option-exit-active');
+                setTimeout(function() {
+                    li.parentElement.removeChild(li);
+                    updateOptionsFromList();
+                }, 500); // Duración de la animación
+            }
+        }
+
+        function updateOptionsFromList() {
+            var optionsInputs = document.querySelectorAll('#options-list input[type="text"]');
+            options = [];
+            optionsInputs.forEach(function(input) {
+                options.push(input.value.trim() || "Opción Vacía");
+                input.addEventListener('input', updateOptionsFromList);
+            });
+            arc = Math.PI / (options.length / 2);
+            drawRouletteWheel();
+        }
+
+        document.getElementById("options-list").addEventListener('click', removeOption);
+
+        window.addEventListener('resize', function() {
+            var canvas = document.getElementById("wheelcanvas");
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetWidth;
+            drawRouletteWheel();
+        });
+
+        // Inicializar
+        var canvas = document.getElementById("wheelcanvas");
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetWidth;
+        drawRouletteWheel();
+    </script>
+</body>
+</html>
